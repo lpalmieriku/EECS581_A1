@@ -1,6 +1,13 @@
 #include <string>
 #include <iostream>
 
+/*
+This function was written using generative AI.
+Model & Version: GPT-5.6 - Luna
+Date: 9/26/26
+Tested: Yes
+Understood: Yes I commented blocks to show my understanding
+*/
 bool extractIPv4(const std::string& str, unsigned long& outAddress, int& outPort)
 {
     // Default failure values
@@ -14,10 +21,10 @@ bool extractIPv4(const std::string& str, unsigned long& outAddress, int& outPort
         unsigned long address = 0;
         bool valid = true;
 
-        // Parse exactly 4 octets
+        //Loop for 4 octets
         for (int octetNum = 0; octetNum < 4; octetNum++)
         {
-            // Must start with a digit
+            // Check if the start of the octet is a number
             if (pos >= str.length() || str[pos] < '0' || str[pos] > '9')
             {
                 valid = false;
@@ -27,14 +34,15 @@ bool extractIPv4(const std::string& str, unsigned long& outAddress, int& outPort
             int value = 0;
             int digits = 0;
 
-            // Parse digits manually
+            // Start parsing each digit if position is less than string length and it's a valid number
             while (pos < str.length() &&
                    str[pos] >= '0' && str[pos] <= '9')
             {
+				//Calculates the value of the address and increases the digits
                 value = value * 10 + (str[pos] - '0');
                 digits++;
 
-                // More than 3 digits can't be a valid IPv4 octet
+                // Checks if there are more than 3 digits in the octet
                 if (digits > 3)
                 {
                     valid = false;
@@ -43,17 +51,17 @@ bool extractIPv4(const std::string& str, unsigned long& outAddress, int& outPort
 
                 pos++;
             }
-
+			// Checks if the octet has a valid value
             if (!valid || value > 255)
             {
                 valid = false;
                 break;
             }
 
-            // Add this octet to the 32-bit address
+            // Add the octet to the 32-bit address
             address = (address << 8) | value;
 
-            // The first three octets must be followed by '.'
+            // Check if every octet apart from the 4th one is separated by a '.'
             if (octetNum < 3)
             {
                 if (pos >= str.length() || str[pos] != '.')
@@ -71,14 +79,14 @@ bool extractIPv4(const std::string& str, unsigned long& outAddress, int& outPort
             continue;
         }
 
-        // Check for optional port
+        // Check for port number
         int port = -1;
 
         if (pos < str.length() && str[pos] == ':')
         {
             pos++;
 
-            // A colon must be followed by at least one digit
+            // Check if the port starts with a valid digit
             if (pos >= str.length() ||
                 str[pos] < '0' || str[pos] > '9')
             {
@@ -88,13 +96,15 @@ bool extractIPv4(const std::string& str, unsigned long& outAddress, int& outPort
             int portValue = 0;
             int portDigits = 0;
 
+			//Loop through all the port digits
             while (pos < str.length() &&
                    str[pos] >= '0' && str[pos] <= '9')
             {
+				//Calculates the value of the port and increases the digits
                 portValue = portValue * 10 + (str[pos] - '0');
                 portDigits++;
 
-                // Port can't have more than 5 digits
+                //Checks if the port has more than 5 digits
                 if (portDigits > 5)
                 {
                     valid = false;
@@ -104,6 +114,7 @@ bool extractIPv4(const std::string& str, unsigned long& outAddress, int& outPort
                 pos++;
             }
 
+			//Checks if the port is a valid value
             if (!valid || portValue > 65535)
             {
                 continue;
@@ -112,7 +123,7 @@ bool extractIPv4(const std::string& str, unsigned long& outAddress, int& outPort
             port = portValue;
         }
 
-        // We found a valid IP (with or without port)
+        //Assign the values if found and return true
         outAddress = address;
         outPort = port;
 
@@ -122,7 +133,14 @@ bool extractIPv4(const std::string& str, unsigned long& outAddress, int& outPort
     return false;
 }
 
-
+/*
+This function was partly written using generative AI.
+Model & Version: GPT-5.6 - Luna
+Date: 9/26/26
+Lines: 155-160
+Tested: Yes
+Understood: Yes I commented blocks to show my understanding
+*/
 
 int main(int argc, char* argv[])
 {
@@ -133,6 +151,7 @@ int main(int argc, char* argv[])
 	std::cout << "Enter a string (or 'END' to quit): ";
 	while(std::getline(std::cin, input) && input != "END") {
 
+		//In order to output the octets in the address, you must bishift to each octet and bitwise and with all 1's to get just that octet printed
 		if (extractIPv4(input, address, port))
 		{
 			std::cout << "Extracted IPv4 address: " << ((address >> 24) & 0xFF) << "."
