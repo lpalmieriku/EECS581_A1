@@ -7,6 +7,8 @@ Model & Version: GPT-5.6 - Luna
 Date: 9/26/26
 Tested: Yes
 Understood: Yes I commented blocks to show my understanding
+
+Prompt Used: Can you create a C++ function that takes in a file input and uses a for loop to parse through each character step by step. The goal is for a function to find a valid IP address or valid IP address + port. If successful the function outputs true and outAddress holds a 32-bit value and the port number is stored in outPort and should be -1 if no port was found. On failure outAddress = 0 and outPort = -1. The function definition should look like this: `bool extractIPv4(const std::string& str, unsigned long& outAddress, int& outPort);` You cannot use any string to number conversion function, automatic parsing libraries, or regex expressions. 
 */
 bool extractIPv4(const std::string& str, unsigned long& outAddress, int& outPort)
 {
@@ -140,6 +142,9 @@ Date: 9/26/26
 Lines: 155-160
 Tested: Yes
 Understood: Yes I commented blocks to show my understanding
+
+Prompt Used: Can you change the if statement in main to extract each octet and optional port and print it like an actual IP?
+(Originally when doing the function prompt it showed me an example of how to print in main which had that extractIPv4 if statement, so I just asked it to alter that)
 */
 
 int main(int argc, char* argv[])
